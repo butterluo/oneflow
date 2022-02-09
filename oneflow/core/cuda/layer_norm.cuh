@@ -121,7 +121,7 @@ struct DefaultComputeType {
 };
 
 template<>
-struct DefaultComputeType<half> {
+struct DefaultComputeType<half> {//BTBT ??? 啥?half的时候其实是float?
   using type = float;
 };
 
@@ -559,7 +559,7 @@ struct DispatchLayerNormWarpImplPackSize {
   cudaError_t operator()(cudaStream_t stream, LOAD load, STORE store, const int64_t rows,
                          const int64_t cols, const double epsilon, ComputeType* mean,
                          ComputeType* inv_variance) {
-    if (cols % 4 == 0) {
+    if (cols % 4 == 0) {//BTBT 这里对pack_size的处理这么复杂,最多也就4,不如直接用if.else来指定是用float4还是float2,如果能够规定cols长度(在trsf中是tkn_emb)能被4整除,就更省时更快
       return DispatchLayerNormWarpImplCols<LOAD, STORE, ComputeType, 4>(
           stream, load, store, rows, cols, epsilon, mean, inv_variance);
     } else if (cols % 2 == 0) {
