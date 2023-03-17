@@ -141,7 +141,7 @@ template<typename T, int N>
 using PackType = typename GetPackType<T, N>::type;
 
 template<typename T, int N>
-union Pack {
+union Pack {//BTBT cpp内存对齐的经典玩法,其中storage用于占一定的内存,而elem负责在所占的内存中形成类型T的数组,
   static_assert(sizeof(PackType<T, N>) == sizeof(T) * N, "");
   __device__ Pack() {
     // do nothing
